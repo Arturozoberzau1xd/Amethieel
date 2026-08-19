@@ -23,17 +23,6 @@ const products = [
   },
   {
     id: 3,
-    code: "AN-03",
-    name: "Anillo Doble",
-    category: "Anillos",
-    price: 85,
-    stock: 1,
-    image: "/images/products/anillodoble.jpg",
-    description:
-      "Anillo de acero inoxidable color plateado, ajustable.",
-  },
-  {
-    id: 4,
     code: "AN-04",
     name: "Anillo Caracol",
     category: "Anillos",
@@ -44,7 +33,7 @@ const products = [
       "Anillo tipo Chunky, ajustable, de acero inoxidable en color plateado.",
   },
   {
-    id: 5,
+    id: 4,
     code: "AN-05",
     name: "Anillo Chunky de Concha",
     category: "Anillos",
@@ -55,7 +44,7 @@ const products = [
       "Anillo ajustable, de acero inoxidable en color plateado.",
   },
   {
-    id: 6,
+    id: 5,
     code: "CO-01",
     name: "Set de Mariposa",
     category: "Collares",
@@ -66,7 +55,7 @@ const products = [
       "Set de collar con aretes, en forma de mariposa, de acero inoxidable en color plateado.",
   },
   {
-    id: 7,
+    id: 6,
     code: "CO-02",
     name: "Set Estrella de Mar",
     category: "Collares",
@@ -77,7 +66,7 @@ const products = [
       "Set de collar con aretes, collar en forma de estrella de mar, de acero inoxidable en color dorado.",
   },
   {
-    id: 8,
+    id: 7,
     code: "CO-03",
     name: "Set de Corazón",
     category: "Collares",
@@ -88,7 +77,7 @@ const products = [
       "Set de collar con aretes, collar en forma de corazón, de acero inoxidable en color plateado.",
   },
   {
-    id: 9,
+    id: 8,
     code: "CO-04",
     name: "Collar Flores",
     category: "Collares",
@@ -99,18 +88,7 @@ const products = [
       "Collar de acero inoxidable, en color plateado.",
   },
   {
-    id: 10,
-    code: "CO-05",
-    name: "Collar Trébol",
-    category: "Collares",
-    price: 80,
-    stock: 1,
-    image: "/images/products/settrebol.jpg",
-    description:
-      "Collar de acero inoxidable en color dorado.",
-  },
-  {
-    id: 11,
+    id: 9,
     code: "PL-01",
     name: "Pulsera tipo Van Cleef",
     category: "Pulseras",
@@ -121,18 +99,7 @@ const products = [
       "Pulsera de acero inoxidable en color dorado y blanco.",
   },
   {
-    id: 12,
-    code: "PL-02",
-    name: "Pulsera Delfines",
-    category: "Pulseras",
-    price: 95,
-    stock: 1,
-    image: "/images/products/pulseradelfin.jpg",
-    description:
-      "Pulsera tipo Pandora con dijes, de acero inoxidable en color plateado.",
-  },
-  {
-    id: 13,
+    id: 10,
     code: "PL-03",
     name: "Pulsera Estrellas",
     category: "Pulseras",
@@ -143,7 +110,7 @@ const products = [
       "Pulsera tipo Pandora con dijes de estrellas de mar y corazón, de acero inoxidable en color plateado.",
   },
   {
-    id: 14,
+    id: 11,
     code: "BR-04",
     name: "Brazalete Corazón",
     category: "Pulseras",
@@ -154,7 +121,7 @@ const products = [
       "Brazalete de corazones, ajustable, de acero inoxidable en color dorado.",
   },
   {
-    id: 15,
+    id: 12,
     code: "BR-05",
     name: "Brazalete Flor",
     category: "Pulseras",
@@ -165,7 +132,7 @@ const products = [
       "Brazalete de flores, ajustable, de acero inoxidable en color dorado.",
   },
   {
-    id: 16,
+    id: 13,
     code: "AR-01",
     name: "Aretes Redondos",
     category: "Aretes",
@@ -176,7 +143,7 @@ const products = [
       "Aretes redondos, de tachuela, de acero inoxidable en color dorado con negro.",
   },
   {
-    id: 17,
+    id: 14,
     code: "AR-02",
     name: "Aretes Moño",
     category: "Aretes",
@@ -187,7 +154,7 @@ const products = [
       "Aretes de moño, de tachuela, de acero inoxidable en color dorado.",
   },
   {
-    id: 18,
+    id: 15,
     code: "AR-03",
     name: "Aretes Gota",
     category: "Aretes",
@@ -198,7 +165,7 @@ const products = [
       "Aretes de tachuela, de acero inoxidable en color plateado.",
   },
   {
-    id: 19,
+    id: 16,
     code: "AR-04",
     name: "Aretes Flor",
     category: "Aretes",
@@ -209,7 +176,7 @@ const products = [
       "Aretes redondos, de tachuela, de acero inoxidable en color dorado con blanco.",
   },
   {
-    id: 20,
+    id: 17,
     code: "AR-05",
     name: "Aretes Hoja",
     category: "Aretes",
@@ -220,7 +187,7 @@ const products = [
       "Aretes en forma de hoja, de tachuela, de acero inoxidable en color plateado.",
   },
   {
-    id: 21,
+    id: 18,
     code: "AR-06",
     name: "Aretes Plata",
     category: "Aretes",
