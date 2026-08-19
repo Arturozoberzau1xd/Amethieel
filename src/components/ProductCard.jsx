@@ -1,4 +1,4 @@
-import { WHATSAPP_NUMBER } from "../config/contact";
+import { INSTAGRAM_CHAT_URL } from "../config/contact";
 
 function ProductCard({ product }) {
   const getStockStatus = () => {
@@ -24,7 +24,7 @@ function ProductCard({ product }) {
 
   const stockStatus = getStockStatus();
 
-  const whatsappMessage = `
+  const instagramMessage = `
 Hola 💜
 
 Me gustaría pedir información sobre este producto de Amethieel:
@@ -36,37 +36,44 @@ Precio: $${product.price.toFixed(2)}
 ¿Sigue disponible?
   `.trim();
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    whatsappMessage
-  )}`;
+  const handleInstagramClick = async () => {
+    try {
+      // Copia automáticamente la información del producto
+      await navigator.clipboard.writeText(instagramMessage);
+    } catch (error) {
+      console.error("No se pudo copiar el mensaje:", error);
+    }
+
+    // Abre el chat de Instagram
+    window.open(
+      INSTAGRAM_CHAT_URL,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   return (
     <article className="product-card">
-
       <div className="product-image-container">
-
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          onClick={handleInstagramClick}
           className="product-image-link"
-          title={`Consultar ${product.name} por WhatsApp`}
+          title={`Consultar ${product.name} por Instagram`}
         >
           <img
             src={product.image}
             alt={product.name}
             className="product-image"
           />
-        </a>
+        </button>
 
         <span className={stockStatus.className}>
           {stockStatus.text}
         </span>
-
       </div>
 
       <div className="product-info">
-
         <div className="product-top-info">
           <p className="product-category">
             {product.category}
@@ -95,17 +102,14 @@ Precio: $${product.price.toFixed(2)}
           )}
         </div>
 
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          onClick={handleInstagramClick}
           className="whatsapp-button"
         >
           Pedir información
-        </a>
-
+        </button>
       </div>
-
     </article>
   );
 }

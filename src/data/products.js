@@ -116,7 +116,7 @@ const products = [
     category: "Pulseras",
     price: 150,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/van.jpg",
     description:
       "Pulsera de acero inoxidable en color dorado y blanco.",
   },
@@ -127,7 +127,7 @@ const products = [
     category: "Pulseras",
     price: 95,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/pulseradelfin.jpg",
     description:
       "Pulsera tipo Pandora con dijes, de acero inoxidable en color plateado.",
   },
@@ -138,7 +138,7 @@ const products = [
     category: "Pulseras",
     price: 95,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/pestrellas.jpg",
     description:
       "Pulsera tipo Pandora con dijes de estrellas de mar y corazón, de acero inoxidable en color plateado.",
   },
@@ -149,7 +149,7 @@ const products = [
     category: "Pulseras",
     price: 100,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/bcorazon.jpg",
     description:
       "Brazalete de corazones, ajustable, de acero inoxidable en color dorado.",
   },
@@ -160,7 +160,7 @@ const products = [
     category: "Pulseras",
     price: 120,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/bflores.jpg",
     description:
       "Brazalete de flores, ajustable, de acero inoxidable en color dorado.",
   },
@@ -171,7 +171,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/areteredondo.jpg",
     description:
       "Aretes redondos, de tachuela, de acero inoxidable en color dorado con negro.",
   },
@@ -182,7 +182,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/aretemono.jpg",
     description:
       "Aretes de moño, de tachuela, de acero inoxidable en color dorado.",
   },
@@ -193,7 +193,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/aretegota.jpg",
     description:
       "Aretes de tachuela, de acero inoxidable en color plateado.",
   },
@@ -204,7 +204,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/areteflor.jpg",
     description:
       "Aretes redondos, de tachuela, de acero inoxidable en color dorado con blanco.",
   },
@@ -215,7 +215,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/aretehoja.jpg",
     description:
       "Aretes en forma de hoja, de tachuela, de acero inoxidable en color plateado.",
   },
@@ -226,7 +226,7 @@ const products = [
     category: "Aretes",
     price: 75,
     stock: 1,
-    image: "/images/products/anillocaracol.jpg",
+    image: "/images/products/areteplata.jpg",
     description:
       "Aretes de tachuela, de acero inoxidable en color plateado.",
   },
