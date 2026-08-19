@@ -24,8 +24,7 @@ function ProductCard({ product }) {
 
   const stockStatus = getStockStatus();
 
-  const instagramMessage = `
-Hola 💜
+  const instagramMessage = `Hola 💜
 
 Me gustaría pedir información sobre este producto de Amethieel:
 
@@ -33,18 +32,19 @@ Producto: ${product.name}
 Código: ${product.code}
 Precio: $${product.price.toFixed(2)}
 
-¿Sigue disponible?
-  `.trim();
+¿Sigue disponible?`;
 
   const handleInstagramClick = async () => {
     try {
-      // Copia automáticamente la información del producto
       await navigator.clipboard.writeText(instagramMessage);
+
+      alert(
+        "💜 Copiamos la información del producto.\n\nAhora pégala en el chat de Instagram para enviárnosla."
+      );
     } catch (error) {
       console.error("No se pudo copiar el mensaje:", error);
     }
 
-    // Abre el chat de Instagram
     window.open(
       INSTAGRAM_CHAT_URL,
       "_blank",
@@ -55,6 +55,7 @@ Precio: $${product.price.toFixed(2)}
   return (
     <article className="product-card">
       <div className="product-image-container">
+
         <button
           type="button"
           onClick={handleInstagramClick}
@@ -71,9 +72,11 @@ Precio: $${product.price.toFixed(2)}
         <span className={stockStatus.className}>
           {stockStatus.text}
         </span>
+
       </div>
 
       <div className="product-info">
+
         <div className="product-top-info">
           <p className="product-category">
             {product.category}
@@ -91,6 +94,7 @@ Precio: $${product.price.toFixed(2)}
         </p>
 
         <div className="product-footer">
+
           <span className="product-price">
             ${product.price.toFixed(2)}
           </span>
@@ -100,6 +104,7 @@ Precio: $${product.price.toFixed(2)}
               {product.stock} disponibles
             </span>
           )}
+
         </div>
 
         <button
@@ -107,8 +112,9 @@ Precio: $${product.price.toFixed(2)}
           onClick={handleInstagramClick}
           className="whatsapp-button"
         >
-          Pedir información
+          Pedir información por Instagram
         </button>
+
       </div>
     </article>
   );
