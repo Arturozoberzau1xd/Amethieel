@@ -1,77 +1,49 @@
-import { useEffect, useState } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import ProductGrid from "./components/ProductGrid";
-import CategoryFilter from "./components/CategoryFilter";
-import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
-import { getProducts } from "./services/productService";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] =
-    useState("Todos");
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data = await getProducts();
-      setProducts(data);
-    };
-
-    loadProducts();
-  }, []);
-
-  const categories = [
-    "Todos",
-    ...new Set(products.map((product) => product.category)),
-  ];
-
-  const filteredProducts =
-    selectedCategory === "Todos"
-      ? products
-      : products.filter(
-          (product) =>
-            product.category === selectedCategory
-        );
-
   return (
-    <>
-      <Header />
+    <Routes>
 
-      <main>
-        <Hero />
+      <Route
+        path="/"
+        element={<Home />}
+      />
 
-        <section
-          className="catalog-section"
-          id="catalogo"
-        >
-          <div className="container">
-            <div className="section-heading">
-              <p>NUESTRA COLECCIÓN</p>
+      <Route
+        path="/admin/login"
+        element={<AdminLogin />}
+      />
 
-              <h2>Encuentra tu próximo favorito</h2>
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-              <span>
-                Explora nuestros accesorios disponibles.
-              </span>
-            </div>
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to="/"
+            replace
+          />
+        }
+      />
 
-            <CategoryFilter
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
-
-            <ProductGrid
-              products={filteredProducts}
-            />
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </>
+    </Routes>
   );
 }
 

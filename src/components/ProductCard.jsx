@@ -1,4 +1,4 @@
-import { INSTAGRAM_CHAT_URL } from "../config/contact";
+import { WHATSAPP_NUMBER } from "../config/contact";
 
 function ProductCard({ product }) {
   const getStockStatus = () => {
@@ -24,50 +24,43 @@ function ProductCard({ product }) {
 
   const stockStatus = getStockStatus();
 
-  const instagramMessage = `Hola 💜
+  const whatsappMessage = `
+Hola 💜
 
 Me gustaría pedir información sobre este producto de Amethieel:
 
 Producto: ${product.name}
 Código: ${product.code}
-Precio: $${product.price.toFixed(2)}
+Precio: $${Number(product.price).toFixed(2)}
 
-¿Sigue disponible?`;
+¿Sigue disponible?
+  `.trim();
 
-  const handleInstagramClick = async () => {
-    try {
-      await navigator.clipboard.writeText(instagramMessage);
-
-      alert(
-        "💜 Copiamos la información del producto.\n\nAhora pégala en el chat de Instagram para enviárnosla."
-      );
-    } catch (error) {
-      console.error("No se pudo copiar el mensaje:", error);
-    }
-
-    window.open(
-      INSTAGRAM_CHAT_URL,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  };
+  const whatsappUrl =
+    `https://wa.me/${WHATSAPP_NUMBER}` +
+    `?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <article className="product-card">
+
       <div className="product-image-container">
 
-        <button
-          type="button"
-          onClick={handleInstagramClick}
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className="product-image-link"
-          title={`Consultar ${product.name} por Instagram`}
         >
           <img
-            src={product.image}
+            src={
+              product.image_url ||
+              product.image ||
+              "/images/placeholder.jpg"
+            }
             alt={product.name}
             className="product-image"
           />
-        </button>
+        </a>
 
         <span className={stockStatus.className}>
           {stockStatus.text}
@@ -78,6 +71,7 @@ Precio: $${product.price.toFixed(2)}
       <div className="product-info">
 
         <div className="product-top-info">
+
           <p className="product-category">
             {product.category}
           </p>
@@ -85,6 +79,7 @@ Precio: $${product.price.toFixed(2)}
           <span className="product-code">
             {product.code}
           </span>
+
         </div>
 
         <h3>{product.name}</h3>
@@ -96,7 +91,7 @@ Precio: $${product.price.toFixed(2)}
         <div className="product-footer">
 
           <span className="product-price">
-            ${product.price.toFixed(2)}
+            ${Number(product.price).toFixed(2)}
           </span>
 
           {product.stock > 0 && (
@@ -107,15 +102,17 @@ Precio: $${product.price.toFixed(2)}
 
         </div>
 
-        <button
-          type="button"
-          onClick={handleInstagramClick}
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className="whatsapp-button"
         >
-          Pedir información por Instagram
-        </button>
+          Pedir información
+        </a>
 
       </div>
+
     </article>
   );
 }
