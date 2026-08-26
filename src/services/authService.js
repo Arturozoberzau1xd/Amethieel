@@ -1,57 +1,24 @@
-const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL;
+const API_URL =
+  import.meta.env.VITE_API_URL;
 
-const getCookie = (name) => {
-  const cookies = document.cookie.split("; ");
+const TOKEN_KEY = "amethieel_admin_token";
 
-  const cookie = cookies.find((row) =>
-    row.startsWith(`${name}=`)
-  );
-
-  if (!cookie) {
-    return null;
-  }
-
-  return decodeURIComponent(
-    cookie.split("=")[1]
-  );
-};
-
-export const getCsrfCookie = async () => {
-  const response = await fetch(
-    `${BACKEND_URL}/sanctum/csrf-cookie`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      "No se pudo obtener el token CSRF."
-    );
-  }
+export const getToken = () => {
+  return sessionStorage.getItem(TOKEN_KEY);
 };
 
 export const login = async (
   email,
   password
 ) => {
-  await getCsrfCookie();
-
-  const xsrfToken = getCookie("XSRF-TOKEN");
-
   const response = await fetch(
-    `${BACKEND_URL}/login`,
+    `${API_URL}/admin/login`,
     {
       method: "POST",
-
-      credentials: "include",
 
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-XSRF-TOKEN": xsrfToken,
       },
 
       body: JSON.stringify({
@@ -70,23 +37,38 @@ export const login = async (
     );
   }
 
+  sessionStorage.setItem(
+    TOKEN_KEY,
+    data.token
+  );
+
   return data;
 };
 
 export const getAdmin = async () => {
-  const response = await fetch(
-    `${BACKEND_URL}/api/admin/me`,
-    {
-      method: "GET",
-      credentials: "include",
+  const token = getToken();
 
+  if (!token) {
+    return null;
+  }
+
+  const response = await fetch(
+    `${API_URL}/admin/me`,
+    {
       headers: {
         Accept: "application/json",
+
+        Authorization:
+          `Bearer ${token}`,
       },
     }
   );
 
   if (!response.ok) {
+    sessionStorage.removeItem(
+      TOKEN_KEY
+    );
+
     return null;
   }
 
@@ -96,31 +78,27 @@ export const getAdmin = async () => {
 };
 
 export const logout = async () => {
-  await getCsrfCookie();
+  const token = getToken();
 
-  const xsrfToken = getCookie("XSRF-TOKEN");
+  try {
+    if (token) {
+      await fetch(
+        `${API_URL}/admin/logout`,
+        {
+          method: "POST",
 
-  const response = await fetch(
-    `${BACKEND_URL}/logout`,
-    {
-      method: "POST",
+          headers: {
+            Accept: "application/json",
 
-      credentials: "include",
-
-      headers: {
-        Accept: "application/json",
-        "X-XSRF-TOKEN": xsrfToken,
-      },
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
     }
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      "No se pudo cerrar la sesión."
+  } finally {
+    sessionStorage.removeItem(
+      TOKEN_KEY
     );
   }
-};
-
-export const getXsrfToken = () => {
-  return getCookie("XSRF-TOKEN");
 };

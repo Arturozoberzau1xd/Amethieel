@@ -1,22 +1,24 @@
-import {
-  getCsrfCookie,
-  getXsrfToken,
-} from "./authService";
+import { getToken } from "./authService";
 
-const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL;
+const API_URL =
+  import.meta.env.VITE_API_URL;
+
+const getAuthHeaders = () => {
+  const token = getToken();
+
+  return {
+    Accept: "application/json",
+
+    Authorization:
+      `Bearer ${token}`,
+  };
+};
 
 export const getAdminProducts = async () => {
   const response = await fetch(
-    `${BACKEND_URL}/api/admin/products`,
+    `${API_URL}/admin/products`,
     {
-      method: "GET",
-
-      credentials: "include",
-
-      headers: {
-        Accept: "application/json",
-      },
+      headers: getAuthHeaders(),
     }
   );
 
@@ -32,21 +34,12 @@ export const getAdminProducts = async () => {
 export const createProduct = async (
   product
 ) => {
-  await getCsrfCookie();
-
-  const xsrfToken = getXsrfToken();
-
   const response = await fetch(
-    `${BACKEND_URL}/api/admin/products`,
+    `${API_URL}/admin/products`,
     {
       method: "POST",
 
-      credentials: "include",
-
-      headers: {
-        Accept: "application/json",
-        "X-XSRF-TOKEN": xsrfToken,
-      },
+      headers: getAuthHeaders(),
 
       body: product,
     }
@@ -68,27 +61,21 @@ export const updateProduct = async (
   id,
   product
 ) => {
-  await getCsrfCookie();
-
-  const xsrfToken = getXsrfToken();
-
   /*
-   * Laravel + archivos funciona mejor
-   * usando POST + _method=PUT.
+   * Para actualizar FormData con imagen:
+   * Laravel interpreta _method=PUT.
    */
-  product.append("_method", "PUT");
+  product.append(
+    "_method",
+    "PUT"
+  );
 
   const response = await fetch(
-    `${BACKEND_URL}/api/admin/products/${id}`,
+    `${API_URL}/admin/products/${id}`,
     {
       method: "POST",
 
-      credentials: "include",
-
-      headers: {
-        Accept: "application/json",
-        "X-XSRF-TOKEN": xsrfToken,
-      },
+      headers: getAuthHeaders(),
 
       body: product,
     }
@@ -106,22 +93,15 @@ export const updateProduct = async (
   return data;
 };
 
-export const deleteProduct = async (id) => {
-  await getCsrfCookie();
-
-  const xsrfToken = getXsrfToken();
-
+export const deleteProduct = async (
+  id
+) => {
   const response = await fetch(
-    `${BACKEND_URL}/api/admin/products/${id}`,
+    `${API_URL}/admin/products/${id}`,
     {
       method: "DELETE",
 
-      credentials: "include",
-
-      headers: {
-        Accept: "application/json",
-        "X-XSRF-TOKEN": xsrfToken,
-      },
+      headers: getAuthHeaders(),
     }
   );
 
