@@ -1,4 +1,5 @@
 import { useState } from "react";
+import imageCompression from "browser-image-compression";
 
 const getInitialForm = (product) => {
   if (!product) {
@@ -26,6 +27,16 @@ const getInitialForm = (product) => {
   };
 };
 
+const formatFileSize = (bytes) => {
+  if (!bytes) {
+    return "0 MB";
+  }
+
+  const megabytes = bytes / (1024 * 1024);
+
+  return `${megabytes.toFixed(2)} MB`;
+};
+
 function ProductForm({
   product,
   onSave,
@@ -40,6 +51,13 @@ function ProductForm({
   );
 
   const [saving, setSaving] = useState(false);
+
+  const [processingImage, setProcessingImage] =
+    useState(false);
+
+  const [imageInfo, setImageInfo] = useState(null);
+
+  const [imageError, setImageError] = useState("");
 
   const handleChange = (event) => {
     const {
@@ -58,39 +76,115 @@ function ProductForm({
     }));
   };
 
-  const handleImage = (event) => {
+  const handleImage = async (event) => {
     const file = event.target.files?.[0];
 
     if (!file) {
       return;
     }
 
-    setForm((current) => ({
-      ...current,
-      image: file,
-    }));
+    setImageError("");
+    setProcessingImage(true);
+    setImageInfo(null);
 
-    setPreview(
-      URL.createObjectURL(file)
-    );
+    try {
+      const originalSize = file.size;
+
+      const options = {
+        maxSizeMB: 4,
+        maxWidthOrHeight: 1600,
+        useWebWorker: true,
+        initialQuality: 0.85,
+        maxIteration: 10,
+      };
+
+      const compressedFile =
+        await imageCompression(
+          file,
+          options
+        );
+
+      setForm((current) => ({
+        ...current,
+        image: compressedFile,
+      }));
+
+      setPreview((currentPreview) => {
+        if (
+          currentPreview &&
+          currentPreview.startsWith("blob:")
+        ) {
+          URL.revokeObjectURL(
+            currentPreview
+          );
+        }
+
+        return URL.createObjectURL(
+          compressedFile
+        );
+      });
+
+      setImageInfo({
+        originalSize,
+        compressedSize:
+          compressedFile.size,
+      });
+    } catch (error) {
+      console.error(
+        "Error al optimizar la imagen:",
+        error
+      );
+
+      setImageError(
+        "No se pudo procesar la imagen. Intenta con otra fotografía."
+      );
+
+      setForm((current) => ({
+        ...current,
+        image: null,
+      }));
+    } finally {
+      setProcessingImage(false);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (processingImage) {
+      return;
+    }
 
     try {
       setSaving(true);
 
       const data = new FormData();
 
-      data.append("code", form.code);
-      data.append("name", form.name);
+      data.append(
+        "code",
+        form.code
+      );
+
+      data.append(
+        "name",
+        form.name
+      );
+
       data.append(
         "category",
         form.category
       );
-      data.append("price", form.price);
-      data.append("stock", form.stock);
+
+      data.append(
+        "price",
+        form.price
+      );
+
+      data.append(
+        "stock",
+        form.stock
+      );
+
       data.append(
         "description",
         form.description
@@ -104,7 +198,8 @@ function ProductForm({
       if (form.image) {
         data.append(
           "image",
-          form.image
+          form.image,
+          form.image.name
         );
       }
 
@@ -120,7 +215,6 @@ function ProductForm({
       onSubmit={handleSubmit}
     >
       <div className="admin-form-grid">
-
         <div className="form-group">
           <label>Código</label>
 
@@ -205,10 +299,53 @@ function ProductForm({
             type="file"
             accept="image/jpeg,image/png,image/webp"
             onChange={handleImage}
+            disabled={
+              processingImage ||
+              saving
+            }
           />
-        </div>
 
+          <small>
+            La imagen se optimizará
+            automáticamente antes de
+            subirla.
+          </small>
+        </div>
       </div>
+
+      {processingImage && (
+        <div className="admin-image-processing">
+          Optimizando imagen...
+        </div>
+      )}
+
+      {imageError && (
+        <div className="admin-error">
+          {imageError}
+        </div>
+      )}
+
+      {imageInfo && (
+        <div className="admin-image-info">
+          <span>
+            Original:{" "}
+            <strong>
+              {formatFileSize(
+                imageInfo.originalSize
+              )}
+            </strong>
+          </span>
+
+          <span>
+            Optimizada:{" "}
+            <strong>
+              {formatFileSize(
+                imageInfo.compressedSize
+              )}
+            </strong>
+          </span>
+        </div>
+      )}
 
       {preview && (
         <div className="admin-image-preview">
@@ -242,27 +379,34 @@ function ProductForm({
       </label>
 
       <div className="admin-form-actions">
-
         <button
           type="submit"
           className="admin-primary-button"
-          disabled={saving}
+          disabled={
+            saving ||
+            processingImage
+          }
         >
-          {saving
-            ? "Guardando..."
-            : product
-              ? "Guardar cambios"
-              : "Crear producto"}
+          {processingImage
+            ? "Optimizando imagen..."
+            : saving
+              ? "Guardando..."
+              : product
+                ? "Guardar cambios"
+                : "Crear producto"}
         </button>
 
         <button
           type="button"
           className="admin-secondary-button"
           onClick={onCancel}
+          disabled={
+            saving ||
+            processingImage
+          }
         >
           Cancelar
         </button>
-
       </div>
     </form>
   );
